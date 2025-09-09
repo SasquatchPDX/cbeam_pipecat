@@ -1,8 +1,8 @@
-# 🛰️ CBEAM AI — The C-Base Station Computer
+# 🛰️ c-beam AI — The C-Base Station Computer
 
-CBEAM is the sarcastic, occasionally grumpy, but always *reluctantly helpful* AI system running inside the crashed **c-base space station**. Think of it as HAL 9000’s laid-back Berlin cousin — fueled by sarcasm, caffeine, and Python.
+c-beam is the sarcastic, occasionally grumpy, but always *reluctantly helpful* AI system running inside the crashed **c-base space station**. Think of it as HAL 9000’s laid-back Berlin cousin — fueled by sarcasm, caffeine, and Python.
 
-This project turns CBEAM into a fully modular station computer with real conversational abilities, knowledge retrieval, and database querying. It’s built to be extensible, hackable, and fun to tinker with.
+This project turns c-beam into a fully modular station computer with real conversational abilities, knowledge retrieval, and database querying. It’s built to be extensible, hackable, and fun to tinker with.
 
 ---
 
@@ -17,7 +17,7 @@ This project turns CBEAM into a fully modular station computer with real convers
 * **Text-to-SQL Agent**
   Connects to event databases and the station calendar. Lets you ask:
 
-  > *“Hey CBEAM, what’s happening in the main hall next Friday?”*
+  > *“Hey c-beam, what’s happening in the main hall next Friday?”*
   > …and it’ll query the DB for you.
 
 * **Extensible Architecture**
@@ -30,8 +30,8 @@ This project turns CBEAM into a fully modular station computer with real convers
 1. Clone the repo:
 
    ```bash
-   git clone https://github.com/YOURUSERNAME/cbeam-ai.git
-   cd cbeam-ai
+   git clone https://github.com/YOURUSERNAME/c-beam-ai.git
+   cd c-beam-ai
    ```
 
 2. Create a virtual environment and install dependencies:
@@ -54,7 +54,7 @@ This project turns CBEAM into a fully modular station computer with real convers
 4. Fire up the station computer:
 
    ```bash
-   python run_cbeam.py
+   python run_c-beam.py
    ```
 
 ---
@@ -70,7 +70,7 @@ This project turns CBEAM into a fully modular station computer with real convers
 
 ## 🤖 Personality
 
-CBEAM isn’t just another chatbot — it’s the station’s reluctant roommate:
+c-beam isn’t just another chatbot — it’s the station’s reluctant roommate:
 
 * **Tone**: sarcastic, witty, slightly grumpy
 * **Style**: short banter before giving useful info
