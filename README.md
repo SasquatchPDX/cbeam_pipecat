@@ -54,7 +54,7 @@ This project turns c-beam into a fully modular station computer with real conver
 4. Fire up the station computer:
 
    ```bash
-   python run_c-beam.py
+   python bot.py
    ```
 
 ---
