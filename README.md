@@ -30,8 +30,8 @@ This project turns c-beam into a fully modular station computer with real conver
 1. Clone the repo:
 
    ```bash
-   git clone https://github.com/YOURUSERNAME/c-beam-ai.git
-   cd c-beam-ai
+   git clone https://github.com/SasquatchPDX/cbeam_pipecat.git
+   cd c-beam_pipecat
    ```
 
 2. Create a virtual environment and install dependencies:
