@@ -77,6 +77,142 @@ c-beam isn’t just another chatbot — it’s the station’s reluctant roommat
 * **Goal**: always provide answers… eventually
 
 ---
+Architecture
+
+graph TB
+      subgraph "Client Layer (React/TypeScript)"
+          UI[Terminal UI Interface]
+          WRT[WebRTC Transport]
+          MSG[MessagesPanel - Real-time Transcripts]
+          LLM_SEL[LLM Provider Selector]
+          LANG[Language Context]
+          BOOT[Boot Sequence Animation]
+      end
+
+      subgraph "Voice Processing Pipeline (Pipecat)"
+          STT[WhisperSTT Service<br/>Speech-to-Text]
+          TTS[KokoroTTS/NativeTTS<br/>Text-to-Speech]
+          VAD[SileroVAD<br/>Voice Activity Detection]
+          TRANS[Daily WebRTC Transport<br/>Port 7860]
+      end
+
+      subgraph "Core Processing Chain"
+          IMM[ImmediateTranscriptProcessor<br/>Instant UI Updates]
+          CONV[ConversationLogger<br/>SQLite Storage]
+          TXT2SQL[Txt2SQLEnricher<br/>Calendar Queries]
+          RAG[RAGContextProcessor<br/>Knowledge Search]
+          ML[MultilingualProcessor<br/>Translation Support]
+          CONTEXT[OpenAI LLM Context<br/>Message Threading]
+      end
+
+      subgraph "Knowledge Systems"
+          subgraph "RAG System"
+              RAG_DB[(Vector Database<br/>957 Chunks)]
+              KB[Knowledge Base<br/>German/English Docs]
+              EMBED[Ollama Embeddings<br/>nomic-embed-text]
+          end
+
+          subgraph "Calendar System"
+              CAL_DB[(DuckDB Calendar<br/>31,243 Events)]
+              ICAL[c-base iCal Feed<br/>Auto-sync]
+              SQL_GEN[Natural Language → SQL<br/>duckdb-nsql:7b]
+          end
+      end
+
+      subgraph "AI/LLM Layer"
+          OLLAMA[Ollama Server<br/>Port 11434]
+          GPT_OSS[gpt-oss:20b Model<br/>Chat Completions]
+          DUCKDB_MODEL[duckdb-nsql:7b-q2_K<br/>SQL Generation]
+          EMBED_MODEL[nomic-embed-text<br/>Embeddings]
+      end
+
+      subgraph "API Services"
+          API_SRV[API Server<br/>Port 5001]
+          SWITCH[LLM Provider Switching<br/>Ollama/OpenAI/GPT5]
+      end
+
+      subgraph "Character & Personality"
+          CASS[Cassandra AI<br/>Grumpy but Helpful<br/>c-base Station AI]
+          SYS_INST[System Instructions<br/>Personality & Behavior]
+          RESPONSES[Canned Responses<br/>Immediate Feedback]
+      end
+
+      subgraph "Data Storage"
+          CONV_DB[(conversations.db<br/>SQLite)]
+          VECTOR_DB[(knowledge_vectors.json<br/>Nano-VectorDB)]
+          META_DB[(knowledge_metadata.json<br/>Document Metadata)]
+      end
+
+      %% User Flow
+      USER[👤 User] --> UI
+      UI <--> WRT
+      WRT <--> TRANS
+
+      %% Voice Pipeline
+      TRANS --> VAD
+      VAD --> STT
+      STT --> IMM
+
+      %% Processing Chain
+      IMM --> MSG
+      IMM --> CONV
+      CONV --> TXT2SQL
+      TXT2SQL --> RAG
+      RAG --> ML
+      ML --> CONTEXT
+
+      %% LLM Processing
+      CONTEXT --> OLLAMA
+      OLLAMA --> GPT_OSS
+      GPT_OSS --> CONTEXT
+      CONTEXT --> TTS
+      TTS --> TRANS
+
+      %% Knowledge Systems
+      TXT2SQL <--> CAL_DB
+      TXT2SQL <--> SQL_GEN
+      SQL_GEN <--> DUCKDB_MODEL
+      CAL_DB <--> ICAL
+
+      RAG <--> RAG_DB
+      RAG_DB <--> KB
+      RAG_DB <--> EMBED_MODEL
+      EMBED_MODEL <--> OLLAMA
+
+      %% API Layer
+      UI <--> API_SRV
+      API_SRV <--> SWITCH
+      SWITCH <--> OLLAMA
+
+      %% Character Integration
+      CONTEXT --> CASS
+      CASS --> SYS_INST
+      TXT2SQL --> RESPONSES
+
+      %% Data Storage
+      CONV --> CONV_DB
+      RAG --> VECTOR_DB
+      RAG --> META_DB
+
+      %% Styling
+      classDef userInterface fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+      classDef voiceProcessing fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+      classDef coreProcessing fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
+      classDef knowledge fill:#fff3e0,stroke:#e65100,stroke-width:2px
+      classDef aiLayer fill:#fce4ec,stroke:#880e4f,stroke-width:2px
+      classDef storage fill:#f1f8e9,stroke:#33691e,stroke-width:2px
+      classDef character fill:#ede7f6,stroke:#311b92,stroke-width:2px
+
+      class UI,WRT,MSG,LLM_SEL,LANG,BOOT userInterface
+      class STT,TTS,VAD,TRANS voiceProcessing
+      class IMM,CONV,TXT2SQL,RAG,ML,CONTEXT coreProcessing
+      class RAG_DB,KB,EMBED,CAL_DB,ICAL,SQL_GEN knowledge
+      class OLLAMA,GPT_OSS,DUCKDB_MODEL,EMBED_MODEL,API_SRV,SWITCH aiLayer
+      class CONV_DB,VECTOR_DB,META_DB storage
+      class CASS,SYS_INST,RESPONSES character
+
+
+---
 
 ## 🧑‍🚀 Contributing
 
